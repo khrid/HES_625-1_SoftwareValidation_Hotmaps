@@ -2,7 +2,9 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 
 public class EdgeTest {
 
@@ -15,7 +17,9 @@ public class EdgeTest {
 
     @BeforeEach
     void setupTest() {
-        driver = new EdgeDriver();
+        EdgeOptions options = new EdgeOptions();
+        options.addArguments("--headless");
+        driver = new EdgeDriver(options);
     }
 
     @AfterEach
