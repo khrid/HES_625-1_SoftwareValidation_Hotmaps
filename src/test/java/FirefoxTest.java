@@ -2,45 +2,39 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.springframework.util.Assert;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
-import java.util.List;
-
-public class EdgeTest {
+public class FirefoxTest {
 
     WebDriver driver;
 
     @BeforeAll
     static void setupClass() {
-        WebDriverManager.edgedriver().setup();
+        WebDriverManager.firefoxdriver().setup();
     }
 
     @BeforeEach
     void setupTest() {
-        EdgeOptions options = new EdgeOptions();
+        FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--headless");
-        driver = new EdgeDriver(options);
+        driver = new FirefoxDriver(options);
+        System.out.print("Testing...");
     }
 
     @AfterEach
     void teardown() {
-        if(driver != null) {
+        if (driver != null) {
             driver.quit();
+            System.out.println(" done.");
         }
     }
 
     @Test
     @DisplayName("hotmapscloud page title")
     void checkPageTitle() {
-        System.out.print("Testing...");
         driver.get("https://www.hotmapscloud.hevs.ch/map");
-        Assertions.assertEquals(driver.getTitle(),"Toolbox");
-        System.out.println(" done.");
+        Assertions.assertEquals(driver.getTitle(), "Toolbox");
     }
 
     @Test
