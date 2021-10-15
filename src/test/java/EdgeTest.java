@@ -1,6 +1,7 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -13,11 +14,13 @@ import java.util.List;
 
 public class EdgeTest {
 
+    private static Utils utils;
     WebDriver driver;
 
     @BeforeAll
     static void setupClass() {
         WebDriverManager.edgedriver().setup();
+        utils = new Utils();
     }
 
     @BeforeEach
@@ -47,13 +50,39 @@ public class EdgeTest {
     @DisplayName("[Zoom] + button exists")
     void zoomInButtonExists() {
         driver.get("https://www.hotmapscloud.hevs.ch/map");
+
         Assertions.assertEquals(1, driver.findElements(By.className("leaflet-control-zoom-in")).size());
+
+        driver.get("https://www.hotmapscloud.hevs.ch/map");
+        // //*[@id="modal-full"]/div/div/div/p[7]/button
+        WebElement zoomButton = driver.findElement(By.className("leaflet-control-zoom-in"));
+        WebElement closePopup = driver.findElement(By.xpath("//*[@id=\"modal-full\"]/div/div/div/p[7]/button"));
+        closePopup.click();
+        WebElement placeInput = driver.findElement(By.id("place-input"));
+        placeInput.sendKeys("Paris");
+        placeInput.sendKeys(Keys.ENTER);
+        utils.takeScreenshot(driver, "zoomInButtonExists-parisBeforeZoom.png");
+        zoomButton.click();
+        utils.takeScreenshot(driver, "zoomInButtonExists-parisAfterZoomIn.png");
+
     }
 
     @Test
     @DisplayName("[Zoom] - button exists")
-    void zoomOutButtonExists() {
+    void zoomOutButtonExists() throws InterruptedException {
         driver.get("https://www.hotmapscloud.hevs.ch/map");
         Assertions.assertEquals(1, driver.findElements(By.className("leaflet-control-zoom-out")).size());
+
+        driver.get("https://www.hotmapscloud.hevs.ch/map");
+        // //*[@id="modal-full"]/div/div/div/p[7]/button
+        WebElement zoomButton = driver.findElement(By.className("leaflet-control-zoom-out"));
+        WebElement closePopup = driver.findElement(By.xpath("//*[@id=\"modal-full\"]/div/div/div/p[7]/button"));
+        closePopup.click();
+        WebElement placeInput = driver.findElement(By.id("place-input"));
+        placeInput.sendKeys("Paris");
+        placeInput.sendKeys(Keys.ENTER);
+        utils.takeScreenshot(driver, "zoomOutButtonExists-parisBeforeZoom.png");
+        zoomButton.click();
+        utils.takeScreenshot(driver, "zoomOutButtonExists-parisAfterZoomOut.png");
     }
 }
