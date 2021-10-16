@@ -11,22 +11,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class Utils {
-    static String timestamp;
-
-    public Utils() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmm");
-        timestamp = LocalDateTime.now().format(formatter);
-    }
+    static String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmm"));
 
     static void takeScreenshot(WebDriver driver, String filename) {
+        String browser = ((RemoteWebDriver) driver).getCapabilities().getBrowserName().toLowerCase(Locale.ROOT);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(2000); // pour s'assurer que l'action que l'on veut capturer a été faite
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         TakesScreenshot screenshot = ((TakesScreenshot) driver);
         File file = screenshot.getScreenshotAs(OutputType.FILE);
-        File DestFile = new File("C://tmp//selenium//" + timestamp + "//" + ((RemoteWebDriver) driver).getCapabilities().getBrowserName().toLowerCase(Locale.ROOT) + "//" + filename);
+        File DestFile = new File("C://tmp//selenium//" + browser + "//" + filename);
         try {
             FileUtils.copyFile(file, DestFile);
         } catch (IOException e) {
